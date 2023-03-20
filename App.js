@@ -1,82 +1,39 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  Button,
-  Platform,
-  StatusBar,
-  Dimensions,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import WelcomeScreen from "./app/screen/WelcomeScreen";
+import Card from "./app/components/Card";
+import { View, Text, SafeAreaView, TextInput } from "react-native";
+import ListingDetailsScreen from "./app/screen/ListingDetailsScreen";
+import ViewImageScreen from "./app/screen/ViewImageScreen";
+import MessageScreen from "./app/screen/MessageScreen";
+import AppTextInput from "./app/components/AppTextInput";
+import LoginScreen from "./app/screen/LoginScreen";
+import RegisterScreen from "./app/screen/RegisterScreen";
 
-import { useDeviceOrientation } from "@react-native-community/hooks";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
-export default function App() {
+function App(props) {
+  const Stack = createNativeStackNavigator();
+
+  // const findUser = async () => {
+  //   const result = await AsyncStorage.getItem("user");
+  //   console.log(result);
+  // };
+
+  // useEffect(() => {
+  //   findUser();
+  // }, []);
+
   return (
-    <View
-      style={{
-        // backgroundColor: "dodgerblue",
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-      }}
-    >
-      <Image
-        style={{ flex: 1, height: "100%", width: "100%", alignItems: "center" }}
-        source={require("./assets/background.jpg")}
-      ></Image>
-      <Image
-        style={{
-          position: "absolute",
-          top: 20,
-          height: "30%",
-          width: "30%",
-          resizeMode: "contain",
-        }}
-        source={require("./assets/logo-red.png")}
-      ></Image>
-      <Text
-        style={{
-          position: "absolute",
-          top: 200,
-        }}
-      >
-        Sell what you don't need
-      </Text>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          width: "100%",
-          height: "10%",
-          position: "absolute",
-          backgroundColor: "#fc5c65",
-          top: 650,
-        }}
-      ></View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          width: "100%",
-          height: "10%",
-          position: "absolute",
-          backgroundColor: "#4ECDC4",
-          top: 720,
-        }}
-      ></View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-});
+export default App;
