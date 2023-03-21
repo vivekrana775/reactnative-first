@@ -5,13 +5,17 @@ import {
   Image,
   ImageBackground,
   Dimensions,
+  TouchableOpacity,
+  BackHandler,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Screen from "../components/Screen";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -19,8 +23,39 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({ navigation }) => {
-  //   const [username, setUsername] = useState("");
-  //   const [password, setPassword] = useState("");
+  // useEffect(() => {
+  //   displayData();
+  // }, []);
+
+  const [data, setData] = useState({});
+
+  handleLoginPage = (values) => {
+    displayData = async () => {
+      try {
+        let keys = await AsyncStorage.getAllKeys();
+        const result = await AsyncStorage.multiGet(keys);
+
+        setData({ ...data, result });
+
+        return result;
+      } catch (error) {
+        alert(error);
+      }
+    };
+    displayData();
+    const users = data["result"];
+
+    const users1 = users.map((item) => item.map((item1) => JSON.parse(item1)));
+    let n = users1.length;
+
+    for (let i = 0; i < n; i++) {
+      if (users1[i][1]["email"] === values["email"]) {
+        return navigation.navigate("HomeScreen");
+      }
+    }
+    alert("Please Register First");
+    console.log(users1);
+  };
 
   return (
     <ImageBackground
@@ -34,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
         ></Image>
         <Formik
           initialValues={{ email: "", password: "" }}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={(values) => handleLoginPage(values)}
           validationSchema={validationSchema}
         >
           {({

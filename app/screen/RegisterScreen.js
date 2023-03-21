@@ -5,6 +5,7 @@ import {
   Image,
   ImageBackground,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import Screen from "../components/Screen";
@@ -12,8 +13,20 @@ import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const onhandleSubmit = async (values, navigation) => {
+  await AsyncStorage.setItem(Math.random().toString(), JSON.stringify(values))
+    .then(() => {
+      navigation.navigate("LoginScreen");
+      console.log(`${JSON.stringify(values)} was saved successfully`);
+    })
+    .catch(() => {
+      console.log("Some error occured");
+    });
+};
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -22,12 +35,8 @@ const validationSchema = Yup.object().shape({
     [Yup.ref("password"), null],
     "Passwords must match"
   ),
+  name: Yup.string().required().label("Name"),
 });
-
-const onhandleSubmit = async (values) => {
-  const result = await AsyncStorage.setItem("user", JSON.stringify(values));
-  console.log(result);
-};
 
 const RegisterScreen = ({ navigation }) => {
   //   const [username, setUsername] = useState("");
@@ -44,12 +53,33 @@ const RegisterScreen = ({ navigation }) => {
           source={require("../../assets/logo-red.png")}
         ></Image>
         <Formik
-          initialValues={{ email: "", password: "", confirmPassword: "" }}
-          onSubmit={(values) => onhandleSubmit(values)}
+          initialValues={{ email: "", password: "", name: "" }}
+          onSubmit={(values) => onhandleSubmit(values, navigation)}
           validationSchema={validationSchema}
         >
-          {({ handleChange, handleSubmit, errors }) => (
+          {({
+            handleChange,
+            handleSubmit,
+            errors,
+            setFieldTouched,
+            touched,
+          }) => (
             <>
+              <AppTextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Name                                        "
+                icon="fish"
+                keyboardType="default"
+                textContentType="password"
+                onChangeText={handleChange("name")}
+                onBlur={() => setFieldTouched("name")}
+              />
+              {touched.name && (
+                <Text style={styles.text}>
+                  {errors.name == null ? null : errors.name}
+                </Text>
+              )}
               <AppTextInput
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -58,8 +88,13 @@ const RegisterScreen = ({ navigation }) => {
                 keyboardType="email-address"
                 textContentType="emailAddress"
                 onChangeText={handleChange("email")}
+                onBlur={() => setFieldTouched("email")}
               />
-              <Text style={styles.text}>{errors.email}</Text>
+              {touched.email && (
+                <Text style={styles.text}>
+                  {errors.email == null ? null : errors.email}
+                </Text>
+              )}
               <AppTextInput
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -68,8 +103,13 @@ const RegisterScreen = ({ navigation }) => {
                 placeholder="Password                                      "
                 icon="lock"
                 onChangeText={handleChange("password")}
+                onBlur={() => setFieldTouched("password")}
               />
-              <Text style={styles.text}>{errors.password}</Text>
+              {touched.password && (
+                <Text style={styles.text}>
+                  {errors.password == null ? null : errors.password}
+                </Text>
+              )}
               <AppTextInput
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -108,7 +148,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     padding: 10,
     left: 28,
-    top: 530,
+    top: 570,
     height: 50,
   },
   text: {
