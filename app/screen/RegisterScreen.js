@@ -21,7 +21,7 @@ const onhandleSubmit = async (values, navigation) => {
   await AsyncStorage.setItem(Math.random().toString(), JSON.stringify(values))
     .then(() => {
       navigation.navigate("LoginScreen");
-      console.log(`${JSON.stringify(values)} was saved successfully`);
+      // console.log(`${JSON.stringify(values)} was saved successfully`);
     })
     .catch(() => {
       console.log("Some error occured");

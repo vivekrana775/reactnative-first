@@ -1,0 +1,3 @@
+export const ACTION_TYPES = {
+  IS_AUTHORIZED: "IS_AUTHORIZED",
+};

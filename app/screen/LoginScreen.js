@@ -16,6 +16,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { isAuthorized } from "./../store/action";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -26,7 +28,8 @@ const LoginScreen = ({ navigation }) => {
   // useEffect(() => {
   //   displayData();
   // }, []);
-
+  const authorized = useSelector((state) => state.authorized);
+  const dispatch = useDispatch();
   const [data, setData] = useState({});
 
   handleLoginPage = (values) => {
@@ -49,12 +52,18 @@ const LoginScreen = ({ navigation }) => {
     let n = users1.length;
 
     for (let i = 0; i < n; i++) {
-      if (users1[i][1]["email"] === values["email"]) {
+      console.log(users1[i][1]["email"]);
+
+      if (
+        users1[i][1]["email"] === values["email"] &&
+        users1[i][1]["confirmPassword"] === values["password"]
+      ) {
+        dispatch(isAuthorized());
+
         return navigation.navigate("HomeScreen");
       }
     }
     alert("Please Register First");
-    console.log(users1);
   };
 
   return (
