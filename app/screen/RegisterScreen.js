@@ -7,13 +7,12 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import Screen from "../components/Screen";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "../components/AppButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useNavigation } from "@react-navigation/native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

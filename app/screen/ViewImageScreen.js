@@ -1,25 +1,35 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-// import { colors } from "../../app/config/colors";
+import { useSelector, useDispatch } from "react-redux";
+import { SET_IMAGE_URI } from "../store/action";
 
-function ViewImageScreen(props) {
+function ViewImageScreen({ navigation }) {
+  const imageUri = useSelector((state) => state.imageUri);
+
+  const dispatch = useDispatch();
+
+  const deleteImage = () => {
+    dispatch(SET_IMAGE_URI(null));
+    navigation.navigate("PostScreen");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.closeIcon}>
         <MaterialCommunityIcons name="close" size={30} color="white" />
-        <View style={styles.deleteIcon}>
+        <TouchableOpacity
+          style={styles.deleteIcon}
+          onPress={() => deleteImage()}
+        >
           <MaterialCommunityIcons
             name="trash-can-outline"
             size={35}
             color="white"
           />
-        </View>
+        </TouchableOpacity>
       </View>
-      <Image
-        style={styles.imageContainer}
-        source={require("../../assets/chair.jpg")}
-      />
+      <Image style={styles.imageContainer} source={{ uri: imageUri }} />
     </View>
   );
 }
@@ -44,7 +54,7 @@ const styles = StyleSheet.create({
   deleteIcon: {
     positon: "absolute",
     top: -35,
-    right: -300,
+    left: 270,
   },
 });
 

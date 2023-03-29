@@ -1,12 +1,9 @@
 import {
   StyleSheet,
   Text,
-  View,
   Image,
   ImageBackground,
   Dimensions,
-  TouchableOpacity,
-  BackHandler,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Screen from "../components/Screen";
@@ -17,7 +14,7 @@ import * as Yup from "yup";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { isAuthorized } from "./../store/action";
+import { isAuthorized, SET_NAME, SET_USERNAME } from "./../store/action";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -25,12 +22,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({ navigation }) => {
-  // useEffect(() => {
-  //   displayData();
-  // }, []);
-  const authorized = useSelector((state) => state.authorized);
   const dispatch = useDispatch();
   const [data, setData] = useState({});
+  // const username = useSelector((state) => state.username);
+  // const allBlogs = useSelector((state) => state.blogs);
+
+  // this function is called when formik submit the values and the values are password and username
+  // this goes into first i am storing the values in async storage using a a random key then i
+  // am getting all keys using getAllKeys and all item of async storage using those keys using multget
 
   handleLoginPage = (values) => {
     displayData = async () => {
@@ -48,19 +47,43 @@ const LoginScreen = ({ navigation }) => {
     displayData();
     const users = data["result"];
 
-    const users1 = users.map((item) => item.map((item1) => JSON.parse(item1)));
+    // getting the DATA into users and converting some values from JSON format to check authentication of user
+
+    const users1 = [];
+
+    let x = users.length;
+
+    for (let i = 0; i < x; i++) {
+      users1.push(JSON.parse(users[i][1]));
+    }
+
     let n = users1.length;
 
     for (let i = 0; i < n; i++) {
-      console.log(users1[i][1]["email"]);
-
       if (
-        users1[i][1]["email"] === values["email"] &&
-        users1[i][1]["confirmPassword"] === values["password"]
+        users1[i]["email"] === values["email"] &&
+        users1[i]["confirmPassword"] === values["password"]
       ) {
-        dispatch(isAuthorized());
+        const storeIsAuthorized = async () => {
+          try {
+            await AsyncStorage.setItem(
+              "isAuthorized",
+              JSON.stringify({ isAuthorized: true })
+            );
+          } catch (error) {
+            alert(error);
+          }
+        };
+        storeIsAuthorized();
 
-        return navigation.navigate("HomeScreen");
+        // storing data in redux persist so that we can reuse it later but i did that using alsync storage so some things are going
+        // woring in async storage and some things are using redux persist
+
+        dispatch(isAuthorized(true));
+        dispatch(SET_USERNAME(users1[i]["email"]));
+        dispatch(SET_NAME(users1[i]["name"]));
+
+        return;
       }
     }
     alert("Please Register First");

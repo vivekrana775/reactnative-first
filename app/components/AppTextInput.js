@@ -4,9 +4,9 @@ import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TextInput } from "react-native";
 
-const AppTextInput = ({ icon, ...otherProps }) => {
+const AppTextInput = ({ icon, title_style, details_style, ...otherProps }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, title_style, details_style]}>
       {icon && (
         <MaterialCommunityIcons
           name={icon}
