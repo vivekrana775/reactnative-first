@@ -1,18 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
 import LoginScreen from "../app/screen/LoginScreen";
 import WelcomeScreen from "../app/screen/WelcomeScreen";
 import RegisterScreen from "../app/screen/RegisterScreen";
-import HomeScreen from "../app/screen/HomeScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
-import ListingDetailsScreen from "../app/screen/ListingDetailsScreen";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useSelector, useDispatch } from "react-redux";
 import ViewImageScreen from "./../app/screen/ViewImageScreen";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { isAuthorized, SET_IMAGE_URI } from "./../app/store/action";
+import { isAuthorized } from "./../app/store/action";
 import BlogScreen from "./../app/screen/BlogScreen";
 
 const Stack = createNativeStackNavigator();
@@ -28,7 +26,7 @@ const AuthNavigator = () => {
     try {
       let result = await AsyncStorage.getItem("isAuthorized");
       result = JSON.parse(result);
-      // console.log(result);
+
       dispatch(isAuthorized(result["isAuthorized"]));
     } catch (error) {
       alert(error);

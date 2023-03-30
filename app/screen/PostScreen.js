@@ -21,37 +21,70 @@ import * as Permissions from "expo-permissions";
 import AppTextInput from "../components/AppTextInput";
 import AppButton from "./../components/AppButton";
 
-const PostScreen = ({ navigation }) => {
+const PostScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const imageUri = useSelector((state) => state.imageUri);
   const username = useSelector((state) => state.username);
   const name = useSelector((state) => state.name);
+  const imageUri = useSelector((state) => state.imageUri);
 
   //states for blog - image, title and blog
 
   const [blogTitle, setBlogTitle] = useState("");
   const [blogText, setBlogText] = useState("");
+  // const [imageUri, setImageUri] = useState("");
 
   // function for pressing the publish button
 
   const allBlogs = useSelector((state) => state.blogs);
 
+  let is_edit = false;
+  let item = {};
+  let index = undefined;
+
+  if (route.params != undefined) {
+    is_edit = route.params.is_edit;
+
+    item = route.params.item;
+    index = route.params.index;
+  }
+  console.log(route.params);
+
   if (allBlogs[username] == undefined) {
     allBlogs[username] = [];
   }
 
+  useEffect(() => {
+    setBlogTitle(item.title);
+    setBlogText(item.content);
+
+    // dispatch(SET_IMAGE_URI(item.image));
+    // setImageUri(dummy_image);
+  }, [is_edit]);
   // This function is called when we press the Publish button and it store the blog in allBlogs using useState and persist helps and also redux is helping here
 
   const onPublish = (username) => {
-    allBlogs[username].push({
-      name: name,
-      title: blogTitle,
-      content: blogText,
-      image: imageUri,
-      id: Math.random().toString(),
-    });
+    if (is_edit === true) {
+      // This is_edit is working when is_edit is true when we click on edit button the is edit will be true
+      item["image"] = imageUri;
+      item["content"] = blogText;
+      item["title"] = blogTitle;
+      allBlogs[username][index] = item;
+    } else {
+      allBlogs[username].unshift({
+        name: name,
+        title: blogTitle,
+        content: blogText,
+        image: imageUri,
+        id: Math.random().toString(),
+        likes: {},
+        comments: {},
+      });
+    }
+
     dispatch(SET_BLOGS(allBlogs));
     // dispatch(SET_IMAGE_URI(""));
+    navigation.navigate("HomeScreen");
+    route.params = undefined; // because when we publish the params will stay the same so we have to convert it into undefined
     setBlogTitle("");
     setBlogText("");
   };
@@ -107,11 +140,11 @@ const PostScreen = ({ navigation }) => {
           style={styles.image_container}
           onPress={() => navigation.navigate("ViewImageScreen")}
         >
-          {imageUri == "" ? (
+          {/* {imageUri == "" ? (
             <Image style={styles.img} />
-          ) : (
-            <Image source={{ uri: imageUri }} style={styles.img} />
-          )}
+          ) : ( */}
+          <Image source={{ uri: imageUri }} style={styles.img} />
+          {/* )} */}
         </TouchableOpacity>
 
         <AppTextInput

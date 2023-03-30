@@ -6,10 +6,13 @@ import PostScreen from "./../app/screen/PostScreen";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AccountScreen from "./../app/screen/AccountScreen";
+import { SET_IMAGE_URI } from "../app/store/action";
+import { useDispatch } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
+  const dispatch = useDispatch();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -46,7 +49,16 @@ const BottomTabNavigator = () => {
       })}
     >
       <Tab.Screen name="HomeScreen" component={HomeScreen} />
-      <Tab.Screen name="PostScreen" component={PostScreen} />
+      <Tab.Screen
+        name="PostScreen"
+        component={PostScreen}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault;
+            dispatch(SET_IMAGE_URI(""));
+          },
+        }}
+      />
       <Tab.Screen name="AccountScreen" component={AccountScreen} />
     </Tab.Navigator>
   );

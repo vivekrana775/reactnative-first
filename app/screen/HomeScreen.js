@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import AppButton from "../components/AppButton";
 
 import { SET_BLOGS } from "../store/action";
+import { SET_IMAGE_URI } from "../store/action";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SET_EMPTY_BLOGS } from "./../store/action";
@@ -52,20 +53,36 @@ const HomeScreen = ({ navigation }) => {
         source={require("../../assets/background1.jpg")}
         style={styles.container}
       >
-        <AppButton title="Please Write Some BLogs" style={styles.btn_style} />
+        <AppButton
+          onPress={() => navigation.navigate("PostScreen")}
+          title="Write Some Blogs "
+          style={styles.btn_style}
+        />
       </ImageBackground>
     );
   }
 
   userBlogs = [{ id: "left-spacer" }, ...userBlogs, { id: "right_spacer" }];
+
+  //DELETE BLOG BUTTON FUNCTION
   const onDeleteBlog = (item) => {
     userBlogs = userBlogs.slice(1, userBlogs.length - 1);
 
     allBlogs[username] = userBlogs.filter((x) => x["id"] != item["id"]);
     dispatch(SET_BLOGS(allBlogs));
   };
-  const onEditBlog = (item) => {
-    // console.log(allBlogs);
+
+  //EDIT BLOG FUNCTION
+
+  const onEditBlog = (item, index, navigation) => {
+    // navigation.navigate("EditScreen", { item: item, index: index });
+    dispatch(SET_IMAGE_URI(item.image));
+
+    navigation.navigate("PostScreen", {
+      item: item,
+      is_edit: true,
+      index: index,
+    });
   };
 
   return (
@@ -73,7 +90,7 @@ const HomeScreen = ({ navigation }) => {
       {/* <Backdrop userBlogs={userBlogs} scrollX={scrollX} /> */}
       <Animated.FlatList
         showsHorizontalScrollIndicator={false}
-        data={userBlogs.reverse()}
+        data={userBlogs}
         keyExtractor={(item) => item.id}
         horizontal
         contentContainerStyle={{ alignItems: "center" }}
@@ -84,7 +101,7 @@ const HomeScreen = ({ navigation }) => {
         bounces={false}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: false }
+          { useNativeDriver: true }
         )}
         scrollEventThrottle={16}
         renderItem={({ item, index }) => {
@@ -144,7 +161,7 @@ const HomeScreen = ({ navigation }) => {
                     <MaterialCommunityIcons name="delete" size={32} />
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => onEditBlog(item)}
+                    onPress={() => onEditBlog(item, index - 1, navigation)}
                     style={styles.edit_button}
                   >
                     <MaterialCommunityIcons name="pencil" size={32} />
@@ -201,7 +218,7 @@ const styles = StyleSheet.create({
     alignContent: "flex-start",
     margin: 10,
     marginBottom: 0,
-    left: 25,
+    left: 40,
   },
   edit_button: {
     flexDirection: "row",
