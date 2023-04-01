@@ -1,32 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { useSelector } from "react-redux";
-import AppButton from "../components/AppButton";
 
 import HomeScreenComponent from "./HomeScreenComponent";
 import Screen from "../components/Screen";
+import { ScrollView } from "react-native-gesture-handler";
 
-const HomeScreen = ({ navigation }) => {
+const PublicBlogsScreen = ({ navigation }) => {
   const allBlogs = useSelector((state) => state.blogs);
-  const username = useSelector((state) => state.username);
-
-  let userBlogs = [allBlogs[username]];
-  if (userBlogs == undefined || userBlogs.length == 0) {
-    return (
-      <AppButton
-        onPress={() => navigation.navigate("PostScreen")}
-        title="Write Some Blogs "
-        style={styles.btn_style}
-      />
-    );
-  }
+  const keys = Object.keys(allBlogs);
 
   return (
     <Screen>
@@ -48,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
               textTransform: "capitalize",
             }}
           ></Text>
-          <Text style={{ fontSize: 20, fontWeight: "700" }}>Your Blogs</Text>
+          <Text style={{ fontSize: 20, fontWeight: "700" }}>Public Blogs</Text>
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate("AccountScreen")}
@@ -60,32 +42,28 @@ const HomeScreen = ({ navigation }) => {
           />
         </TouchableOpacity>
       </View>
-      {userBlogs.map((item) => (
-        <HomeScreenComponent
-          key={item}
-          userBlogs={item}
-          navigation={navigation}
-        />
-      ))}
+      <ScrollView bounces>
+        {keys.map((item) => (
+          <HomeScreenComponent
+            userBlogs={allBlogs[item]}
+            navigation={navigation}
+            key={item}
+          />
+        ))}
+      </ScrollView>
+      <View
+        style={{ width: "100%", height: 50, backgroundColor: "transparent" }}
+      ></View>
     </Screen>
   );
 };
 
-export default HomeScreen;
+export default PublicBlogsScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  btn_style: {
-    flex: 1,
-    position: "absolute",
-    top: "50%",
-    left: "6%",
-  },
   view_container: {
     width: "100%",
-    height: "7%",
+    height: "6%",
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 10,

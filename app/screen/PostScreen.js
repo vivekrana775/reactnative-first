@@ -42,47 +42,47 @@ const PostScreen = ({ route, navigation }) => {
   let index = undefined;
 
   if (route.params != undefined) {
+    // This is when we are coming from edit button
     is_edit = route.params.is_edit;
 
     item = route.params.item;
     index = route.params.index;
   }
-  console.log(route.params);
 
   if (allBlogs[username] == undefined) {
+    // Is that user is not in the blogs object
     allBlogs[username] = [];
   }
 
   useEffect(() => {
     setBlogTitle(item.title);
-    setBlogText(item.content);
-
-    // dispatch(SET_IMAGE_URI(item.image));
-    // setImageUri(dummy_image);
+    setBlogText(item.content); // setting the content on publish page when coming from edit button when is_edit changes
   }, [is_edit]);
-  // This function is called when we press the Publish button and it store the blog in allBlogs using useState and persist helps and also redux is helping here
+
+  // This function is called when we press the Publish button and it store the
+  // blog in allBlogs using useState and persist helps and also redux is helping here
 
   const onPublish = (username) => {
     if (is_edit === true) {
       // This is_edit is working when is_edit is true when we click on edit button the is edit will be true
-      item["image"] = imageUri;
+      item["image"] = imageUri; // changing values in object and replacing it with index
       item["content"] = blogText;
       item["title"] = blogTitle;
       allBlogs[username][index] = item;
     } else {
       allBlogs[username].unshift({
         name: name,
-        title: blogTitle,
+        title: blogTitle, // Pushing from front so that we get newest blog on front
         content: blogText,
         image: imageUri,
         id: Math.random().toString(),
         likes: {},
         comments: {},
+        email: username,
       });
     }
 
     dispatch(SET_BLOGS(allBlogs));
-    // dispatch(SET_IMAGE_URI(""));
     navigation.navigate("HomeScreen");
     route.params = undefined; // because when we publish the params will stay the same so we have to convert it into undefined
     setBlogTitle("");
@@ -140,18 +140,13 @@ const PostScreen = ({ route, navigation }) => {
           style={styles.image_container}
           onPress={() => navigation.navigate("ViewImageScreen")}
         >
-          {/* {imageUri == "" ? (
-            <Image style={styles.img} />
-          ) : ( */}
           <Image source={{ uri: imageUri }} style={styles.img} />
-          {/* )} */}
         </TouchableOpacity>
 
         <AppTextInput
           icon={"pencil"}
           placeholder={"Title for Your Blog                "}
           numberOfLines={2}
-          // maxLength={28}
           title_style={styles.title}
           onChangeText={(text) => setBlogTitle(text)}
           autocorrect={true}

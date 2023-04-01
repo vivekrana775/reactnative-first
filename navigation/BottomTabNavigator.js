@@ -8,6 +8,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AccountScreen from "./../app/screen/AccountScreen";
 import { SET_IMAGE_URI } from "../app/store/action";
 import { useDispatch } from "react-redux";
+import PublicBlogsScreen from "../app/screen/PublicBlogsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,23 +21,25 @@ const BottomTabNavigator = () => {
         tabBarIcon: ({ color, size, focused }) => {
           let iconName;
           let colorr;
+
           if (route.name === "HomeScreen") {
-            if (focused === true) {
-              iconName = "home-account";
-            } else {
-              iconName = "home-edit";
-            }
-            focused ? (colorr = "black") : "white";
+            iconName = "home-account";
+            focused ? (colorr = "blue") : "#d6d2d2";
           }
+          if (route.name === "PublicBlogsScreen") {
+            iconName = "earth";
+            focused ? (colorr = "blue") : "#d6d2d2";
+          }
+
           if (route.name === "PostScreen") {
             iconName = "pencil";
-            focused ? (colorr = "white") : "black";
+            focused ? (colorr = "blue") : "#d6d2d2";
           }
           if (route.name === "AccountScreen") {
             iconName = "account";
-            focused ? (colorr = "white") : "black";
+            focused ? (colorr = "blue") : "#d6d2d2";
           }
-          color = "black";
+
           return (
             <MaterialCommunityIcons name={iconName} color={colorr} size={32} />
           );
@@ -46,8 +49,10 @@ const BottomTabNavigator = () => {
           return null;
         },
         tabBarHideOnKeyboard: true,
+        tabBarActiveTintColor: "blue",
       })}
     >
+      <Tab.Screen name="PublicBlogsScreen" component={PublicBlogsScreen} />
       <Tab.Screen name="HomeScreen" component={HomeScreen} />
       <Tab.Screen
         name="PostScreen"

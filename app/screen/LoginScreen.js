@@ -14,7 +14,12 @@ import * as Yup from "yup";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { isAuthorized, SET_NAME, SET_USERNAME } from "./../store/action";
+import {
+  isAuthorized,
+  SET_NAME,
+  SET_USERNAME,
+  SET_BLOGS,
+} from "./../store/action";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -34,8 +39,10 @@ const LoginScreen = ({ navigation }) => {
   handleLoginPage = (values) => {
     displayData = async () => {
       try {
-        let keys = await AsyncStorage.getAllKeys();
+        let keys = await AsyncStorage.getAllKeys(); // clear ,ethod to clear all details of user
         const result = await AsyncStorage.multiGet(keys);
+
+        // dispatch(SET_BLOGS({})); //used to clear the user details i.e clear the redux persist storage
 
         setData({ ...data, result });
 
