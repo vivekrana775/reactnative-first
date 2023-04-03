@@ -12,6 +12,7 @@ import ViewImageScreen from "./../app/screen/ViewImageScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { isAuthorized } from "./../app/store/action";
 import BlogScreen from "./../app/screen/BlogScreen";
+import LoadingAnimation from "../app/components/LoadingAnimation";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,7 @@ const AuthNavigator = () => {
         <Stack.Screen name="BottomTab" component={BottomTabNavigator} />
         <Stack.Screen name="ViewImageScreen" component={ViewImageScreen} />
         <Stack.Screen name="BlogScreen" component={BlogScreen} />
+        <Stack.Screen name="LoadingAnimation" component={LoadingAnimation} />
       </Stack.Navigator>
     );
   }

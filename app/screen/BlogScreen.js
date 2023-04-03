@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { SET_BLOGS, SET_IMAGE_URI } from "../store/action";
 
 import { StackActions } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const popAction = StackActions.pop(1);
 
@@ -58,6 +57,15 @@ const BlogScreen = ({ route, navigation }) => {
       });
     }
   };
+  // Stoping someone else to go to user profile
+
+  const handleNavigationToAccountScreen = () => {
+    if (username != user_whose_blog_pressed) {
+      alert("Something is Fishy");
+    } else {
+      navigation.navigate("AccountScreen");
+    }
+  };
 
   return (
     <Screen style={styles.container}>
@@ -79,13 +87,12 @@ const BlogScreen = ({ route, navigation }) => {
               textTransform: "capitalize",
             }}
           >
-            {" "}
             {Blog.name}
           </Text>
           <Text style={{ fontSize: 15, fontWeight: "300" }}>Post Author</Text>
         </View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("AccountScreen")}
+          onPress={() => handleNavigationToAccountScreen()}
           style={styles.user_details_button}
         >
           <Image
@@ -123,7 +130,7 @@ const BlogScreen = ({ route, navigation }) => {
             ) : (
               <Image
                 source={require("../../assets/heart-red.png")}
-                style={{ height: "100%", width: "100%" }}
+                style={{ height: "110%", width: "110%" }}
               />
             )}
 

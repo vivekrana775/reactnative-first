@@ -83,11 +83,17 @@ const PostScreen = ({ route, navigation }) => {
     }
 
     dispatch(SET_BLOGS(allBlogs));
-    navigation.navigate("HomeScreen");
+    navigation.navigate("LoadingAnimation", { text: "Publishing..." }); //going to loading screen and then using timeout to come to home screen
     route.params = undefined; // because when we publish the params will stay the same so we have to convert it into undefined
     setBlogTitle("");
     setBlogText("");
   };
+
+  // for testing purposes onPublish Button
+
+  // const onPublish = () => {
+  //   navigation.navigate("LoadingAnimation");
+  // };
 
   //for requesting permissions
 

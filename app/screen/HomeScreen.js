@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import AppButton from "../components/AppButton";
 
@@ -18,13 +18,20 @@ const HomeScreen = ({ navigation }) => {
   const username = useSelector((state) => state.username);
 
   let userBlogs = [allBlogs[username]];
-  if (userBlogs == undefined || userBlogs.length == 0) {
+
+  const handleLoading = () => {
+    navigation.navigate("PostScreen");
+  };
+
+  if (userBlogs == undefined || userBlogs[0].length == 0) {
     return (
-      <AppButton
-        onPress={() => navigation.navigate("PostScreen")}
-        title="Write Some Blogs "
-        style={styles.btn_style}
-      />
+      <>
+        <AppButton
+          onPress={() => handleLoading()}
+          title="Write Some Blogs "
+          style={styles.btn_style}
+        />
+      </>
     );
   }
 
@@ -41,14 +48,9 @@ const HomeScreen = ({ navigation }) => {
           />
         </TouchableOpacity>
         <View style={styles.user_details}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "800",
-              textTransform: "capitalize",
-            }}
-          ></Text>
-          <Text style={{ fontSize: 20, fontWeight: "700" }}>Your Blogs</Text>
+          <Text style={{ fontSize: 20, fontWeight: "700", top: 10 }}>
+            Your Blogs
+          </Text>
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate("AccountScreen")}

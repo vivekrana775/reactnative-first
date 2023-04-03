@@ -11,7 +11,7 @@ const PublicBlogsScreen = ({ navigation }) => {
   const keys = Object.keys(allBlogs);
 
   return (
-    <Screen>
+    <Screen style={{ backgroundColor: "white" }}>
       <View style={styles.view_container}>
         <TouchableOpacity
           //   onPress={() => navigation.dispatch(popAction)}

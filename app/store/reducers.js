@@ -5,6 +5,7 @@ const initialState = {
   imageUri: null,
   username: "",
   userid: "",
+  name: "",
   blogs: {},
 };
 
