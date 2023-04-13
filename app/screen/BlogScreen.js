@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { SET_BLOGS, SET_IMAGE_URI } from "../store/action";
 
 import { StackActions } from "@react-navigation/native";
+import MainComment from "../../MainComment";
 
 const popAction = StackActions.pop(1);
 
@@ -153,6 +154,7 @@ const BlogScreen = ({ route, navigation }) => {
         <Text style={styles.content}>{Blog.content}</Text>
 
         <Text style={styles.comments_text}>Comments</Text>
+        <MainComment />
       </ScrollView>
     </Screen>
   );

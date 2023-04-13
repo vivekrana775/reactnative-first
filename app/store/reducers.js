@@ -7,6 +7,21 @@ const initialState = {
   userid: "",
   name: "",
   blogs: {},
+  comments: {
+    id: "1",
+    items: [
+      {
+        id: "dsohfoisd",
+        body: "first comment",
+        items: [{ id: "dfkpd", body: "child of first comment", items: [] }],
+      },
+      {
+        id: "sdss",
+        body: "dffsd",
+        items: [],
+      },
+    ],
+  },
 };
 
 export const mainReducer = (state = initialState, { type, payload }) => {

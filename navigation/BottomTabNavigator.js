@@ -1,14 +1,16 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import HomeScreen from "./../app/screen/HomeScreen";
 import PostScreen from "./../app/screen/PostScreen";
-
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AccountScreen from "./../app/screen/AccountScreen";
-import { SET_IMAGE_URI } from "../app/store/action";
-import { useDispatch } from "react-redux";
 import PublicBlogsScreen from "../app/screen/PublicBlogsScreen";
+
+import { SET_IMAGE_URI } from "../app/store/action";
+
+import { useDispatch } from "react-redux";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
