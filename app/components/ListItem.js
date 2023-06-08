@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 
 function ListItem({ title, image, subTitle }) {
-  console.log("<<<<<<<<<<<<<<<<<<<< title >>>>>>>>>>>>>>>>>>", title);
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={image}></Image>

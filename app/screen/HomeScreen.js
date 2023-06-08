@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate("PostScreen");
   };
 
-  if (userBlogs == undefined || userBlogs[0].length == 0) {
+  if (userBlogs == undefined || userBlogs[0]?.length == 0) {
     return (
       <>
         <AppButton

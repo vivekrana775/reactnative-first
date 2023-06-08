@@ -1,12 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import Screen from "./app/components/Screen";
 
 const Comments = ({ comments }) => {
   const [inputComment, setInputComment] = useState("");

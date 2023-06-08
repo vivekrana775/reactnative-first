@@ -29,6 +29,7 @@ const validationSchema = Yup.object().shape({
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [data, setData] = useState({});
+
   // const username = useSelector((state) => state.username);
   // const allBlogs = useSelector((state) => state.blogs);
 
@@ -57,14 +58,13 @@ const LoginScreen = ({ navigation }) => {
     // getting the DATA into users and converting some values from JSON format to check authentication of user
 
     const users1 = [];
-
-    let x = users.length;
+    let x = users?.length;
 
     for (let i = 0; i < x; i++) {
       users1.push(JSON.parse(users[i][1]));
     }
 
-    let n = users1.length;
+    let n = users1?.length;
 
     for (let i = 0; i < n; i++) {
       if (
@@ -151,7 +151,7 @@ const LoginScreen = ({ navigation }) => {
               )}
               <AppButton
                 title="LOGIN"
-                onPress={handleSubmit}
+                onPress={() => handleSubmit()}
                 style={styles.buttonContainer}
               ></AppButton>
             </>

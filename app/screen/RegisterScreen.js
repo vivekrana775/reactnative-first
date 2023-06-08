@@ -22,9 +22,7 @@ const onhandleSubmit = async (values, navigation) => {
       navigation.navigate("LoginScreen");
       // console.log(`${JSON.stringify(values)} was saved successfully`);
     })
-    .catch(() => {
-      console.log("Some error occured");
-    });
+    .catch(() => {});
 };
 
 const validationSchema = Yup.object().shape({
